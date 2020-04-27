@@ -7,6 +7,11 @@ node {
     stage('Git Checkout'){
         git 'https://github.com/jamunakan2307/demo-be.git'
     }
+	
+    stage('Switch branch') {
+        sh "git branch -r"
+	    sh "git checkout ${params.BRANCH}"
+	}
     
     stage('Compile Code'){
         withMaven(maven: 'Maven'){

@@ -1,60 +1,28 @@
-#!/usr/bin/env groovy
-import hudson.model.*
-import hudson.EnvVars
-import java.net.URL 
-
-node {
-    stage('Git Checkout'){
-        git 'https://github.com/jamunakan2307/demo-be.git'
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3.6.3'
+        jdk 'jdk8'
     }
-    
-    stage('Compile Code'){
-        withMaven(maven: 'Maven'){
-            sh 'mvn compile'
-        }
-        
-    }
-    
-      stage('Code Review'){
-     try {
-         withMaven(maven: 'Maven'){
-            sh 'mvn pmd:pmd'
-        }
-        } finally {
-			pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'target/pmd.xml', unHealthy: ''
-    }
-        
-    }
-    
-    stage('Run Test'){
-       
-    try {
-        withMaven(maven: 'Maven'){
-            sh 'mvn test'
-        } 
-        } finally {
-            junit 'target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
-    }
-    }
-        stage('Code Coberage'){
-            try {
-        withMaven(maven: 'Maven'){
-            sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
-        } 
-        } finally {
-            cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
-    } 
-            
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
         }
 
-
-     stage('Prepare Package'){
-         try {
-        withMaven(maven: 'Maven'){
-            sh 'mvn package'
-        } 
-        } finally {
-            archiveArtifacts 'target/*.jar'
-    }
+        stage ('Build') {
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
+            }
+        }
     }
 }

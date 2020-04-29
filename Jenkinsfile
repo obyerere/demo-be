@@ -2,17 +2,17 @@
 pipeline {
     agent none
     stages {
-        stage('Git Checkout'){
+        stage('Git Checkout2'){
         git 'https://github.com/jamunakan2307/demo-be.git'
             }
     
-    stage('Compile Code'){
+    stage('Compile Code2'){
         withMaven(maven: 'Maven'){
             sh 'mvn compile'
             }
         
             }
-    stage('Code Review'){
+    stage('Code Review2'){
      try {
          withMaven(maven: 'Maven'){
             sh 'mvn pmd:pmd'
@@ -22,7 +22,7 @@ pipeline {
     }
         
     }
-        stage('Run Tests and Code Coberage') {
+        stage('Run Tests2 and Code Coberage2') {
             parallel {
                 stage('Test') {
                     agent {
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
         }
-    stage('Prepare Package'){
+    stage('Prepare Package2'){
          try {
         withMaven(maven: 'Maven'){
             sh 'mvn package'

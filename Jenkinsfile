@@ -20,10 +20,19 @@ pipeline {
 
     stages {
 
-        stage("Build & Deploy SNAPSHOT") {
+        stage("Build & Deploy") {
             steps {
                 sh "mvn compile"
             }
+        }
+
+        stage("Code review"){
+          try {
+                sh "mvn pmd:pmd"
+
+        } finally {
+            pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'target/pmd.xml', unHealthy: ''
+    }
         }
 
         stage("Release") {

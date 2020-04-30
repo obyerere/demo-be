@@ -1,28 +1,44 @@
+#!/usr/bin/env groovy
+// see https://jenkins.io/doc/book/pipeline/syntax/
+
 pipeline {
+
     agent any
+
     tools {
-        maven 'Maven 3.6.3'
-        jdk 'jdk8'
+        maven "Maven"
     }
+
+    triggers {
+        pollSCM "* * * * *"
+    }
+    
+    options {
+        timestamps()
+        ansiColor("xterm")
+    }
+
+
     stages {
-        stage ('Initialize') {
+
+        stage("Build & Deploy SNAPSHOT") {
             steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
+                sh "mvn compile"
             }
         }
 
-        stage ('Build') {
+        stage("Release") {
+        
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh "mvn test"
             }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml' 
-                }
-            }
+        }
+
+    }
+
+    post {
+        always {
+            deleteDir()
         }
     }
 }

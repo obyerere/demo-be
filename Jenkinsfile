@@ -5,7 +5,7 @@ import hudson.EnvVars
 import java.net.URL
 
 
-node {
+pipeline {
     stages {
         stage('Git Checkout'){
         git 'https://github.com/jamunakan2307/demo-be.git'

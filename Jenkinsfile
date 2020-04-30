@@ -36,6 +36,7 @@ pipeline {
                 steps {
                 sh "mvn test"
             }
+
          }
            
         }
@@ -44,7 +45,7 @@ pipeline {
           stage("Package") {
         
             steps {
-                sh "mvn test"
+                sh "mvn package"
             }
         }
 
@@ -52,7 +53,8 @@ pipeline {
 
     post {
         always {
-            deleteDir()
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            junit 'build/reports/**/*.xml'
         }
     }
 }

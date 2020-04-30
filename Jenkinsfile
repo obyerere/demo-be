@@ -39,7 +39,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts junit '**/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
+            archiveArtifacts artifacts: junit '**/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
         }
     }
 

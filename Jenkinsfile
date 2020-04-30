@@ -6,7 +6,6 @@ import java.net.URL
 
 
 node {
-    agent none
     stages {
         stage('Git Checkout'){
         git 'https://github.com/jamunakan2307/demo-be.git'

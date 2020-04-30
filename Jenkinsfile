@@ -37,6 +37,13 @@ pipeline {
                 sh "mvn test"
             }
 
+    post {
+        always {
+            archiveArtifacts junit '**/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml', fingerprint: true
+        }
+    }
+
+
          }
            
         }
@@ -54,7 +61,6 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-            junit '**/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
         }
     }
 }

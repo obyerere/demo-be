@@ -6,6 +6,12 @@ import java.net.URL
 
 
 pipeline {
+
+ tools {
+
+    jdk "jdk8"
+    maven "Maven"
+  }
     stages {
         stage('Git Checkout'){
         git 'https://github.com/jamunakan2307/demo-be.git'

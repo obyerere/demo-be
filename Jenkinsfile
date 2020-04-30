@@ -1,60 +1,60 @@
 #!/usr/bin/env groovy
-// see https://jenkins.io/doc/book/pipeline/syntax/
 
-pipeline {
-
-    agent any
-
-    tools {
-        maven "Maven"
-    }
-
-    triggers {
-        pollSCM "* * * * *"
-    }
-    
-    options {
-        timestamps()
-    }
+import hudson.model.*
+import hudson.EnvVars
+import java.net.URL
 
 
+node {
+    agent none
     stages {
-        stage("Compile  & Test") {
-         parallel {
-         stage('Compile') {
-              agent {
-                        label "master"
-                      }
-                steps {
-                sh "mvn compile"
+        stage('Git Checkout'){
+        git 'https://github.com/jamunakan2307/demo-be.git'
             }
-         }
-           stage('Test') {
-              agent {
-                        label "master"
-                      }
-                steps {
-                sh "mvn test"
+    
+    stage('Compile Code'){
+        withMaven(maven: 'Maven'){
+            sh 'mvn compile'
             }
-
-         }
-           
-        }
-    }
-
-          stage("Package") {
         
-            steps {
-                sh "mvn package"
+            }
+    stage('Run Tests and Code Coberage') {
+            parallel {
+                stage('Test') {
+                    agent {
+                        label "agent-1"
+                    }
+                     try {
+        withMaven(maven: 'Maven'){
+            sh 'mvn test'
+            } 
+        } finally {
+            junit 'target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
+                }
+                }
+                stage('Code Coverage') {
+                    agent {
+                        label "master"
+                    }
+                        try {
+        withMaven(maven: 'Maven'){
+            sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
+        } 
+        } finally {
+            cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
+    }
+                }
             }
         }
-
+    stage('Prepare Package'){
+         try {
+        withMaven(maven: 'Maven'){
+            sh 'mvn package'
+        } 
+        } finally {
+            archiveArtifacts 'target/*.jar'
+    }
     }
 
-    post {
-        always {
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-            junit '**/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
-        }
     }
 }

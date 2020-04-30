@@ -20,28 +20,42 @@ pipeline {
 
     stages {
 
-        stage("Build & Deploy") {
-            steps {
-                sh "mvn compile"
-            }
-        }
+         stage ('Build') {
+        def mvnHome = tool 'mvn-default'
 
-        stage("Code review"){
-          try {
-                sh "mvn pmd:pmd"
+        sh "${mvnHome}/bin/mvn --batch-mode -V -U -e clean verify -Dsurefire.useFile=false -Dmaven.test.failure.ignore"
 
-        } finally {
-            pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'target/pmd.xml', unHealthy: ''
+        junit testResults: '**/target/surefire-reports/TEST-*.xml'
+
+        def java = scanForIssues tool: [$class: 'Java']
+        def javadoc = scanForIssues tool: [$class: 'JavaDoc']
+
+        publishIssues issues:[java,javadoc], unstableTotalAll:1
     }
-        }
 
-        stage("Test") {
-        
-            steps {
-                sh "mvn test"
-            }
-        }
+    stage ('Analysis') {
+        def mvnHome = tool 'mvn-default'
 
+        sh "${mvnHome}/bin/mvn -batch-mode -V -U -e checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs"
+
+        def checkstyle = scanForIssues tool: [$class: 'CheckStyle'], pattern: '**/target/checkstyle-result.xml'
+        publishIssues issues:[checkstyle], unstableTotalAll:1
+
+        def pmd = scanForIssues tool: [$class: 'Pmd'], pattern: '**/target/pmd.xml'
+        publishIssues issues:[pmd], unstableTotalAll:1
+
+        def cpd = scanForIssues tool: [$class: 'Cpd'], pattern: '**/target/cpd.xml'
+        publishIssues issues:[cpd]
+
+        def findbugs = scanForIssues tool: [$class: 'FindBugs'], pattern: '**/target/findbugsXml.xml'
+        publishIssues issues:[findbugs], unstableTotalAll:1
+
+        def spotbugs = scanForIssues tool: [$class: 'SpotBugs'], pattern: '**/target/spotbugsXml.xml'
+        publishIssues issues:[spotbugs], unstableTotalAll:1
+
+        def maven = scanForIssues tool: [$class: 'MavenConsole']
+        publishIssues issues:[maven]
+    }
     }
 
     post {

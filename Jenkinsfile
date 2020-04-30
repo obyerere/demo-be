@@ -19,25 +19,25 @@ pipeline {
 
 
     stages {
- parallel {
-        stage("Build & Deploy") {
-        agent {
+        stage("Compile  & Test") {
+         parallel {
+         stage('Compile') {
+              agent {
                         label "master"
-                    }
-            steps {
+                      }
+                steps {
                 sh "mvn compile"
             }
-        }
-
-
-        stage("Test") {
-        agent {
+         }
+           stage('Test') {
+              agent {
                         label "master"
-                    }
-        
-            steps {
+                      }
+                steps {
                 sh "mvn test"
             }
+         }
+           
         }
     }
 

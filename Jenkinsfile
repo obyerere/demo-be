@@ -1,4 +1,4 @@
-#!/usr/bin/env groovy
+t#!/usr/bin/env groovy
 
 import hudson.model.*
 import hudson.EnvVars
@@ -6,7 +6,7 @@ import java.net.URL
 
 
 node{
-    stage('Git Checkout'){
+    stage('Git Checkout2'){
         git 'https://github.com/jamunakan2307/demo-be.git'
     }
     

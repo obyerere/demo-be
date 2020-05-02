@@ -6,15 +6,7 @@ import java.net.URL
 
 
 node{
-    stage('Git Checkout2'){
-        git 'https://github.com/jamunakan2307/demo-be.git'
-    }
-    
-    stage('Compile'){
-        withMaven(maven: 'Maven') {
-            sh 'mvn compile'
-        }
-    }
+
     
      stage('Code Review'){
          try{

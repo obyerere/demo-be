@@ -12,7 +12,7 @@ node{
 	
 	 stage('Git Switch Branch'){
        sh 'git branch -r'
-		 sh 'git checkout branch ${params.BRANCHNAME}'
+		 sh 'git checkout branch ${params.branchName}'
     }
     
     stage('Compile'){

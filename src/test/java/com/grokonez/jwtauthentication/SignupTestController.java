@@ -82,6 +82,7 @@ public class SignupTestController {
 
   @Before
   public void restoredb() throws IOException, InterruptedException {
+    BaseTest.restoreDB("testdb", "root", "root", "C:\\freshdb.sql");
   }
 
  @Test

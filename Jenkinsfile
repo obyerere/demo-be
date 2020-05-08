@@ -5,6 +5,9 @@ import hudson.EnvVars
 import java.net.URL
 
 node {
+
+ def app
+
  stage('Git Checkout') {
   git 'https://github.com/jamunakan2307/demo-be.git'
  }
@@ -62,4 +65,9 @@ stage('Switch branch') {
    archiveArtifacts 'target/*.jar'
   }
  }
+
+ stage('Dockerization') {
+  app = docker.build("vens6910/demo-be")
+ }
+
 }

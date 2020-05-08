@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  demo-standalone:
+    restart: always
+    container_name: demo-standalone
+    image: mysql:5.6
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  demo-be:
+    restart: on-failure
+    container_name: demo-be
+    image: vens6910/demo-be:v1.7
+    expose:
+      - "8086"
+    ports:
+      - 8086:8086
+    environment:
+      WAIT_HOSTS: mysql:3306
+    depends_on:
+      - demo-standalone

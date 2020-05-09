@@ -28,6 +28,10 @@
     <list default="true" id="d0fd787b-91ab-4bd4-9509-f63913a1e6b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/demo-be-0.0.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/demo-be-0.0.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/demo-be-0.0.1.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/demo-be-0.0.1.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,22 +263,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588977292391" />
-    <state width="1877" height="315" key="GridCell.Tab.0.bottom" timestamp="1588977846442">
+    <state width="1877" height="315" key="GridCell.Tab.0.bottom" timestamp="1588983996530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="315" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588977846442" />
-    <state width="1877" height="315" key="GridCell.Tab.0.center" timestamp="1588977846442">
+    <state width="1877" height="315" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588983996530" />
+    <state width="1877" height="315" key="GridCell.Tab.0.center" timestamp="1588983996530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="315" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588977846442" />
-    <state width="1877" height="315" key="GridCell.Tab.0.left" timestamp="1588977846442">
+    <state width="1877" height="315" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588983996530" />
+    <state width="1877" height="315" key="GridCell.Tab.0.left" timestamp="1588983996530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="315" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588977846442" />
-    <state width="1877" height="315" key="GridCell.Tab.0.right" timestamp="1588977846442">
+    <state width="1877" height="315" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588983996530" />
+    <state width="1877" height="315" key="GridCell.Tab.0.right" timestamp="1588983996530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="315" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588977846442" />
+    <state width="1877" height="315" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588983996530" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1588981003225">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

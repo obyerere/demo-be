@@ -1,73 +1,45 @@
-#!/usr/bin/env groovy
-
-import hudson.model.*
-import hudson.EnvVars
-import java.net.URL
-
-node {
-
- def app
-
- stage('Git Checkout') {
-  git 'https://github.com/jamunakan2307/demo-be.git'
+pipeline {
+ environment {
+  registry = "vens6910/demo-be"
+  registryCredential = 'dockerhub'
+  dockerImage = ''
  }
-stage('Switch branch') {
-       sh "git branch -r"
-        sh "git checkout ${params.branchName}"
+ agent any
+ stages {
+  stage('Cloning Git') {
+   steps {
+    git 'https://github.com/jamunakan2307/demo-be.git'
+   }
+  }
+
+  stage('Prepare Package') {
+   steps {
+    withMaven(maven: 'Maven') {
+     sh 'mvn package'
     }
-
- stage('Compile Code') {
-  withMaven(maven: 'Maven') {
-   sh 'mvn compile'
-  }
-
- }
-
- stage('Code Review') {
-  try {
-   withMaven(maven: 'Maven') {
-    sh 'mvn pmd:pmd'
    }
-  } finally {
-   pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'target/pmd.xml', unHealthy: ''
   }
 
- }
-
- stage('Run Test') {
-
-  try {
-   withMaven(maven: 'Maven') {
-    sh 'mvn test'
+  stage('Building image') {
+   steps{
+    script {
+     dockerImage = docker.build registry + ":1.1"
+    }
    }
-  } finally {
-   junit 'target/surefire-reports/TEST-com.grokonez.jwtauthentication.TestBootUp.xml'
   }
- }
- stage('Code Coberage') {
-  try {
-   withMaven(maven: 'Maven') {
-    sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
+  stage('Deploy Image') {
+   steps{
+    script {
+     docker.withRegistry( '', registryCredential ) {
+      dockerImage.push()
+     }
+    }
    }
-  } finally {
-   cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
   }
-
- }
-
-
- stage('Prepare Package') {
-  try {
-   withMaven(maven: 'Maven') {
-    sh 'mvn package'
+  stage('Remove Unused docker image') {
+   steps{
+    sh "docker rmi $registry:1.1"
    }
-  } finally {
-   archiveArtifacts 'target/*.jar'
   }
  }
-
- stage('Dockerization') {
-  app = docker.build("vens6910/demo-be")
- }
-
 }

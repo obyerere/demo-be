@@ -1,20 +1,20 @@
 pipeline {
  environment {
-  registry = "vens6910/demo-be"
-  registryCredential = 'dockerhub'
+  registry = "obyerere1/tea-be"
+  registryCredential = 'Dockerhub'
   dockerImage = ''
  }
  agent any
  stages {
   stage('Cloning Git') {
    steps {
-    git 'https://github.com/jamunakan2307/demo-be.git'
+    git 'https://github.com/obyerere/demo-be.git'
    }
   }
 
   stage('Prepare Package') {
    steps {
-    withMaven(maven: 'Maven') {
+    withMaven(maven: 'maven') {
      sh 'mvn package'
     }
    }
@@ -23,7 +23,7 @@ pipeline {
   stage('Building image') {
    steps{
     script {
-     dockerImage = docker.build registry + ":1.1"
+     dockerImage = docker.build registry + ":3.3"
     }
    }
   }
@@ -38,7 +38,7 @@ pipeline {
   }
   stage('Remove Unused docker image') {
    steps{
-    sh "docker rmi $registry:1.1"
+    sh "docker rmi $registry:3.3"
    }
   }
  }
